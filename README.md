@@ -1,4 +1,4 @@
-# PDF to Google Slides Converter (GAS)
+# 📄 PDF to Google Slides Converter (GAS)
 
 この Google Apps Script (GAS) プロジェクトは、PDF ファイルを Google スライド プレゼンテーションに変換するツールです。Web ベースのインターフェースを備えており、アップロードされた PDF はクライアントサイド (`pdf.js`) で画像に変換され、その後 Google ドライブにアップロードされてスライドが作成されます。
 
