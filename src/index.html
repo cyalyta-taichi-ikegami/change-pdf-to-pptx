@@ -24,6 +24,10 @@
       --accent: #22d3ee;
     }
 
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       background: radial-gradient(circle at top right, #1e293b, var(--bg-dark));
@@ -34,25 +38,26 @@
       align-items: center;
       justify-content: center;
       overflow-x: hidden;
+      padding: 20px;
     }
 
     .container {
-      width: 90%;
-      max-width: 650px;
-      padding: 40px;
+      width: 100%;
+      max-width: 580px;
+      padding: 30px;
       background: var(--card-glass);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 24px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
       text-align: center;
-      animation: fadeIn 0.8s ease-out;
+      animation: fadeIn 0.6s ease-out;
     }
 
     @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(10px);
       }
 
       to {
@@ -63,8 +68,8 @@
 
     h1 {
       font-family: 'Outfit', sans-serif;
-      font-size: 2.5rem;
-      margin-bottom: 8px;
+      font-size: 2rem;
+      margin: 0 0 8px 0;
       background: linear-gradient(to right, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -72,19 +77,20 @@
 
     p.subtitle {
       color: var(--text-dim);
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       font-weight: 300;
+      font-size: 0.9rem;
     }
 
     .input-group {
       text-align: left;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .input-group label {
       display: block;
-      margin-bottom: 8px;
-      font-size: 0.9rem;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
       color: var(--accent);
       font-weight: 600;
     }
@@ -92,51 +98,64 @@
     .input-group input[type="text"] {
       width: 100%;
       padding: 12px 16px;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.3);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
       color: white;
-      box-sizing: border-box;
       transition: all 0.3s;
+      font-size: 0.9rem;
     }
 
     .input-group input[type="text"]:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+      box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
     }
 
     .upload-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       border: 2px dashed rgba(255, 255, 255, 0.2);
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 40px 20px;
       cursor: pointer;
       transition: all 0.3s;
       background: rgba(255, 255, 255, 0.02);
       margin-bottom: 24px;
-      position: relative;
+      min-height: 180px;
     }
 
     .upload-area:hover,
     .upload-area.dragover {
       border-color: var(--primary);
-      background: rgba(0, 210, 255, 0.05);
+      background: rgba(0, 210, 255, 0.06);
+      transform: scale(1.01);
     }
 
     .upload-icon {
-      font-size: 40px;
+      font-size: 48px;
       margin-bottom: 12px;
-      display: block;
+    }
+
+    #upload-text {
+      font-size: 0.95rem;
+      color: var(--text-main);
+      max-width: 80%;
+      line-height: 1.5;
     }
 
     #file-info {
-      margin-top: 16px;
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
+      margin-top: 10px;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
       font-size: 0.85rem;
       display: none;
       text-align: left;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .btn-convert {
@@ -144,43 +163,40 @@
       padding: 16px;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
       color: white;
       font-weight: 700;
       font-size: 1.1rem;
       cursor: pointer;
       transition: all 0.3s;
-      box-shadow: 0 10px 20px -5px rgba(58, 123, 213, 0.4);
+      box-shadow: 0 10px 20px -5px rgba(58, 123, 213, 0.3);
+      margin-top: 10px;
     }
 
     .btn-convert:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 15px 25px -5px rgba(58, 123, 213, 0.5);
-    }
-
-    .btn-convert:active:not(:disabled) {
-      transform: translateY(0);
+      box-shadow: 0 15px 25px -5px rgba(58, 123, 213, 0.4);
     }
 
     .btn-convert:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       background: #475569;
+      box-shadow: none;
     }
 
-    /* Progress Bar */
     #progress-container {
-      margin-top: 32px;
+      margin-top: 24px;
       display: none;
     }
 
     .progress-wrapper {
       width: 100%;
-      height: 8px;
+      height: 10px;
       background: rgba(255, 255, 255, 0.1);
-      border-radius: 4px;
+      border-radius: 5px;
       overflow: hidden;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     #progress-bar {
@@ -191,27 +207,47 @@
     }
 
     #status-text {
-      font-size: 0.85rem;
-      color: var(--text-dim);
+      font-size: 0.9rem;
+      color: var(--accent);
     }
 
     #result-link {
       margin-top: 24px;
       display: none;
-      padding: 16px;
-      background: rgba(34, 211, 238, 0.1);
-      border: 1px solid var(--accent);
-      border-radius: 12px;
+      padding: 20px;
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid rgba(34, 211, 238, 0.3);
+      border-radius: 16px;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
     #result-link a {
       color: var(--primary);
       text-decoration: none;
       font-weight: 600;
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 20px;
+      border: 1px solid var(--primary);
+      border-radius: 8px;
+      transition: all 0.3s;
     }
 
     #result-link a:hover {
-      text-decoration: underline;
+      background: var(--primary);
+      color: var(--bg-dark);
     }
 
     input[type="file"] {
@@ -233,7 +269,7 @@
     <label for="fileInput" class="upload-area" id="dropZone">
       <span class="upload-icon">📄</span>
       <span id="upload-text">PDFファイルをドラッグ＆ドロップ、またはクリックして選択</span>
-      <input type="file" id="fileInput" accept=".pdf" onchange="handleFileSelect(this)" />
+      <input type="file" id="fileInput" accept=".pdf" />
       <div id="file-info">
         <strong>ファイル名:</strong> <span id="info-name">-</span><br>
         <strong>サイズ:</strong> <span id="info-size">-</span><br>
@@ -251,7 +287,7 @@
     </div>
 
     <div id="result-link">
-      🎉 変換が完了しました！<br><br>
+      🎉 変換が完了しました！<br>
       <a id="output-url" href="#" target="_blank">Googleスライドを開く</a>
     </div>
   </div>
@@ -268,6 +304,11 @@
     const progressBar = document.getElementById('progress-bar');
     const progressContainer = document.getElementById('progress-container');
     const resultLink = document.getElementById('result-link');
+
+    // File Select
+    fileInput.addEventListener('change', e => {
+      handleFileSelect(e.target);
+    });
 
     // Drag & Drop
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -335,11 +376,11 @@
       const images = [];
 
       for (let i = 1; i <= pdf.numPages; i++) {
-        const percent = Math.round((i / pdf.numPages) * 70); // Up to 70% for image processing
-        updateStatus(`ページを変換中... (${i}/${pdf.numPages})`, percent);
+        const percent = Math.round((i / pdf.numPages) * 70);
+        updateStatus(`ページを画像化中... (${i}/${pdf.numPages})`, percent);
 
         const page = await pdf.getPage(i);
-        const viewport = page.getViewport({ scale: 2.5 }); // High quality
+        const viewport = page.getViewport({ scale: 2.5 });
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
         canvas.width = viewport.width;
@@ -349,11 +390,11 @@
         images.push(canvas.toDataURL('image/png'));
       }
 
-      updateStatus("Googleスライドを作成中...", 80);
+      updateStatus("Googleスライドを作成中...", 85);
 
       google.script.run
         .withSuccessHandler(url => {
-          updateStatus("完了！", 100);
+          updateStatus("変換完了！", 100);
           document.getElementById('output-url').href = url;
           resultLink.style.display = 'block';
           convertBtn.disabled = false;
