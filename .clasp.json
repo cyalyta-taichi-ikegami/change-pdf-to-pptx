@@ -1,0 +1,16 @@
+{
+  "scriptId": "1YSmQ0hygTy9yCf0UqpMAnK0kXXahmbO9_wz4v4qm2yNwBe_c2mXBdZ5R",
+  "rootDir": "src",
+  "scriptExtensions": [
+    ".js",
+    ".gs"
+  ],
+  "htmlExtensions": [
+    ".html"
+  ],
+  "jsonExtensions": [
+    ".json"
+  ],
+  "filePushOrder": [],
+  "skipSubdirectories": false
+}

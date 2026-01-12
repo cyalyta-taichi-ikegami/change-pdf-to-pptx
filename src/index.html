@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script>
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+    </script>
+    <style>
+      body { font-family: sans-serif; padding: 20px; text-align: center; }
+      .container { max-width: 600px; margin: 0 auto; padding: 30px; border: 1px solid #ddd; }
+      button { padding: 10px 20px; cursor: pointer; background: #4285f4; color: white; border: none; }
+      button:disabled { background: #ccc; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>PDF to Slides</h2>
+      <input type="file" id="fileInput" accept=".pdf" />
+      <br><br>
+      <button id="convertBtn" onclick="processPDF()">Convert</button>
+      <div id="status"></div>
+    </div>
+    <script>
+      async function processPDF() {
+        const fileInput = document.getElementById('fileInput');
+        const status = document.getElementById('status');
+        if (!fileInput.files.length) return alert("Select PDF");
+        
+        status.innerText = "Processing...";
+        const file = fileInput.files[0];
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+        const images = [];
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+          status.innerText = `Converting page ${i}/${pdf.numPages}`;
+          const page = await pdf.getPage(i);
+          const viewport = page.getViewport({ scale: 2.0 });
+          const canvas = document.createElement('canvas');
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+          images.push(canvas.toDataURL('image/png'));
+        }
+
+        status.innerText = "Uploading to Slides...";
+        google.script.run
+          .withSuccessHandler(url => status.innerHTML = `<a href="${url}" target="_blank">Open Slides</a>`)
+          .withFailureHandler(e => status.innerText = "Error: " + e)
+          .createPresentationFromImages(images, file.name);
+      }
+    </script>
+  </body>
+</html>
