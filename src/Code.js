@@ -5,26 +5,13 @@ function doGet() {
         .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
-function createPresentationFromImages(images, fileName, folderUrl) {
+function createPresentationFromImages(images, fileName) {
+    let presentationId;
     try {
         const pptName = fileName.replace('.pdf', '') + '_Converted';
         const presentation = SlidesApp.create(pptName);
+        presentationId = presentation.getId();
         const slides = presentation.getSlides();
-
-        // Move to specified folder if URL is provided
-        if (folderUrl) {
-            try {
-                const folderId = extractFolderIdFromUrl(folderUrl);
-                if (folderId) {
-                    const file = DriveApp.getFileById(presentation.getId());
-                    const folder = DriveApp.getFolderById(folderId);
-                    folder.addFile(file);
-                    DriveApp.getRootFolder().removeFile(file);
-                }
-            } catch (err) {
-                console.error('Error moving file: ' + err.toString());
-            }
-        }
 
         images.forEach((base64Data, index) => {
             const data = base64Data.split(',')[1];
@@ -44,13 +31,29 @@ function createPresentationFromImages(images, fileName, folderUrl) {
             slide.getBackground().setPictureFill(blob);
         });
 
-        return presentation.getUrl();
+        presentation.saveAndClose();
+
+        // Export as PPTX
+        const url = "https://docs.google.com/presentation/d/" + presentationId + "/export/pptx";
+        const options = {
+            headers: {
+                Authorization: "Bearer " + ScriptApp.getOAuthToken()
+            }
+        };
+        const response = UrlFetchApp.fetch(url, options);
+        const pptxBlob = response.getBlob();
+
+        // Cleanup: Delete temporary Slides file
+        DriveApp.getFileById(presentationId).setTrashed(true);
+
+        return {
+            base64: Utilities.base64Encode(pptxBlob.getBytes()),
+            fileName: pptName + ".pptx"
+        };
     } catch (e) {
+        if (presentationId) {
+            DriveApp.getFileById(presentationId).setTrashed(true);
+        }
         throw new Error('Error: ' + e.toString());
     }
-}
-
-function extractFolderIdFromUrl(url) {
-    const match = url.match(/[-\w]{25,}/);
-    return match ? match[0] : null;
 }

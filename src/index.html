@@ -259,12 +259,7 @@
 <body>
   <div class="container">
     <h1>PDF to Slides</h1>
-    <p class="subtitle">PDFを高画質なGoogleスライドに一括変換</p>
-
-    <div class="input-group">
-      <label for="folderUrl">保存先フォルダURL (オプション)</label>
-      <input type="text" id="folderUrl" placeholder="https://drive.google.com/drive/folders/..." />
-    </div>
+    <p class="subtitle">PDFを高画質なPowerPoint (.pptx) に変換してダウンロード</p>
 
     <label for="fileInput" class="upload-area" id="dropZone">
       <span class="upload-icon">📄</span>
@@ -287,8 +282,7 @@
     </div>
 
     <div id="result-link">
-      🎉 変換が完了しました！<br>
-      <a id="output-url" href="#" target="_blank">Googleスライドを開く</a>
+      🎉 変換とダウンロードの準備が完了しました！
     </div>
   </div>
 
@@ -370,7 +364,6 @@
       progressContainer.style.display = 'block';
       resultLink.style.display = 'none';
 
-      const folderUrl = document.getElementById('folderUrl').value;
       const arrayBuffer = await selectedFile.arrayBuffer();
       const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
       const images = [];
@@ -390,22 +383,35 @@
         images.push(canvas.toDataURL('image/png'));
       }
 
-      updateStatus("Googleスライドを作成中...", 85);
+      updateStatus("パワーポイントを生成中...", 85);
 
       google.script.run
-        .withSuccessHandler(url => {
-          updateStatus("変換完了！", 100);
-          document.getElementById('output-url').href = url;
+        .withSuccessHandler(result => {
+          updateStatus("完了！", 100);
+
+          const byteCharacters = atob(result.base64);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation' });
+
+          const link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = result.fileName;
+          link.click();
+
           resultLink.style.display = 'block';
           convertBtn.disabled = false;
-          alert("Googleスライドの作成が完了しました！");
+          alert("変換が完了しました。ダウンロードを開始します。");
         })
         .withFailureHandler(e => {
           updateStatus("エラーが発生しました", 0);
           alert("エラー: " + e);
           convertBtn.disabled = false;
         })
-        .createPresentationFromImages(images, selectedFile.name, folderUrl);
+        .createPresentationFromImages(images, selectedFile.name);
     }
 
     function updateStatus(text, percent) {
