@@ -15,7 +15,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
         run: npm install
@@ -25,3 +25,6 @@ jobs:
 
       - name: Push to GAS
         run: npx clasp push --force
+
+      - name: Deploy to GAS
+        run: npx clasp deploy -i AKfycbzpAjjzGg_GUB0ITTwlH6AJcZS8IJMZdmBZzG69mMBYFgchgwwRLCqqVvBTOGozFsr3ug --description "Automated deployment by GitHub Actions"
