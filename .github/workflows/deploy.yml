@@ -27,4 +27,4 @@ jobs:
         run: npx clasp push --force
 
       - name: Deploy to GAS
-        run: npx clasp deploy -i AKfycbz7qdDHo6roaGhotTY-DRc1VYY1L5_3a_knBRUH2SZjCjuGIDrsSqcYXQupFv1PM-p5GA --description "Automated deployment by GitHub Actions"
+        run: npx clasp deploy -i AKfycbzD0IfJqvDhmgyT26yBeHLH6Dr39YBBVznjkQo2lys6ULVuOVv-lYL4hDjmoPqJGLSBCA --description "Automated deployment by GitHub Actions"
